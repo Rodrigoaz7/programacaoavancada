@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1503061703 source:c:\users\rodri\desktop\mystring\mystring-main.cpp
+	<iostream>
+	"MyString.h"
+
+1503061920 c:\users\rodri\desktop\mystring\mystring.h
+	<iostream>
+
+1503061602 source:c:\users\rodri\desktop\mystring\mystring.cpp
+	<iostream>
+	<cstring>
+	"MyString.h"
+
