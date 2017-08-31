@@ -3,6 +3,7 @@
 #include <limits>
 #include <fstream>
 #include <cstring>
+#include <stdlib.h>
 #include "loja_heranca.h"
 
 using namespace std;
@@ -31,7 +32,7 @@ int main()
             cout << "Opcao: ";
             cin >> opcao;
         } while (opcao<-3 || opcao>6);
-
+        system("cls");
         // Entrada de dados, de acordo com a opcao
         switch (opcao)
         {
@@ -92,10 +93,10 @@ int main()
             X.imprimir();
             break;
         case 5:
-            //X.ler(A.c_str());
+            X.ler(A.c_str());
             break;
         case 6:
-            //X.salvar(A.c_str());
+            X.salvar(A.c_str());
             break;
         }
     } while (opcao!=0);

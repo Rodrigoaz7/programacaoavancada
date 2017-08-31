@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1504052820 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\main.cpp
+1504112827 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\main.cpp
 	<iostream>
 	<string>
 	<limits>
 	<fstream>
 	<cstring>
+	<stdlib.h>
 	"loja_heranca.h"
 
-1504052808 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.cpp
+1504218959 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.cpp
 	<string>
 	<cstring>
 	<iostream>
@@ -15,7 +16,7 @@
 	<fstream>
 	"loja_heranca.h"
 
-1504052685 c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.h
+1504211526 c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.h
 	<iostream>
 	<string>
 

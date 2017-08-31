@@ -52,13 +52,23 @@ istream &Produto::digitar(istream &I)
 
 ostream &Produto::imprimir(ostream &O) const
 {
-    O << nome << " | R$ " << preco << endl;
+    O << '"' << nome << '"' << ';' <<  '$' << float(preco)/100.0;
     return O;
 }
 
 istream &Produto::ler(istream &I)
 {
-
+     I.ignore(numeric_limits<streamsize>::max(),'"');
+    //para poder ler as strings
+    double prov;
+    getline(I,nome,'"');
+    I.ignore(numeric_limits<streamsize>::max(),'$');
+    if(nome == ""){
+        preco =0;
+    }else{
+        I >> prov;
+    }
+    return I;
 }
 
 /*
@@ -90,7 +100,7 @@ istream &Livro::digitar(istream &I)
 ostream &Livro::imprimir(ostream &O) const
 {
     Produto::imprimir(O); //Chamando o imprimir dos atributos da classe Produto
-    O << autor;
+    O << ';' << '"' << autor << '"';
     return O;
 }
 
@@ -122,7 +132,7 @@ istream &CD::digitar(istream &I)
 ostream &CD::imprimir(ostream &O) const
 {
     Produto::imprimir(O); //Chamando o imprimir dos atributos da classe Produto
-    O << faixas;
+    O << ';' << faixas;
     return O;
 }
 
@@ -155,7 +165,7 @@ istream &DVD::digitar(istream &I)
 ostream &DVD::imprimir(ostream &O) const
 {
     Produto::imprimir(O); //Chamando o imprimir dos atributos da classe Produto
-    O << duracao;
+    O << ';' << duracao;
     return O;
 }
 
@@ -167,7 +177,7 @@ ostream &DVD::imprimir(ostream &O) const
 
 void ListaLivro::criar(unsigned tam)
 {
-    if(tam>0) {N = tam; x = new Livro[N];}
+    if(tam>=0) {N = tam; x = new Livro[N];}
     else {cerr << "Tamanho invalido ! \n"; limpar(); return;}
 }
 
@@ -187,13 +197,17 @@ void ListaLivro::incluir(const Livro &L)
 
 void ListaLivro::excluir(unsigned id)
 {
-    if(id >= N) {cerr << "indice invalido!\n"; return;}
+    if(id > N) {cerr << "indice invalido!\n"; return;}
     else {
         ListaLivro prov(N-1);
         unsigned j=0;
         for(unsigned i=0; i<N;i++)
         {
-            if(i != id) prov.x[j] = x[i]; j++;
+            if(i != id)
+            {
+                prov.x[j] = x[i];
+                j++;
+            }
         }
         copiar(prov);
     }
@@ -202,11 +216,15 @@ void ListaLivro::excluir(unsigned id)
 void ListaLivro::imprimir() const
 {
     cout << "============ LISTA DE LIVROS ================" << endl;
-    for(unsigned i=0; i<N; i++)
-    {
-        cout << x[i] << endl;
-    }
+    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
     cout << "=============================================" << endl;
+}
+
+void ListaLivro::salvar(ostream &O) const
+{
+    O << "LISTALIVRO " << N << endl;
+    for(unsigned i=0; i<N; i++) O << "L: " << x[i];
+    O << endl;
 }
 /*
     ===============================================
@@ -216,7 +234,7 @@ void ListaLivro::imprimir() const
 
 void ListaCD::criar(unsigned tam)
 {
-    if(tam>0) {N = tam; x = new CD[N];}
+    if(tam>=0) {N = tam; x = new CD[N];}
     else {cerr << "Tamanho invalido ! \n"; limpar(); return;}
 }
 
@@ -251,11 +269,15 @@ void ListaCD::excluir(unsigned id)
 void ListaCD::imprimir() const
 {
     cout << "============ LISTA DE CDs ================" << endl;
-    for(unsigned i=0; i<N; i++)
-    {
-        cout << x[i] << endl;
-    }
+    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
     cout << "=============================================" << endl;
+}
+
+void ListaCD::salvar(ostream &O) const
+{
+    O << "LISTACD " << N << endl;
+    for(unsigned i=0; i<N; i++) O << "C: " << x[i];
+    O << endl;
 }
 
 /*
@@ -266,7 +288,7 @@ void ListaCD::imprimir() const
 
 void ListaDVD::criar(unsigned tam)
 {
-    if(tam>0) {N = tam; x = new DVD[N];}
+    if(tam>=0) {N = tam; x = new DVD[N];}
     else {cerr << "Tamanho invalido ! \n"; limpar(); return;}
 }
 
@@ -300,12 +322,16 @@ void ListaDVD::excluir(unsigned id)
 
 void ListaDVD::imprimir() const
 {
-    cout << "============ LISTA DE DVDs ================" << endl;
-    for(unsigned i=0; i<N; i++)
-    {
-        cout << x[i] << endl;
-    }
+    cout << "============== LISTA DE DVDs ================" << endl;
+    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
     cout << "=============================================" << endl;
+}
+
+void ListaDVD::salvar(ostream &O) const
+{
+    O << "LISTADVD " << N << endl;
+    for(unsigned i=0; i<N; i++) O << "D: " << x[i];
+    O << endl;
 }
 
 /*
@@ -316,13 +342,49 @@ void ListaDVD::imprimir() const
 
 void Loja::imprimir() const
 {
-    cout << "Lista de livros: " << endl;
     LL.imprimir();
-    cout << "Lista de CDs: " << endl;
     LC.imprimir();
-    cout << "Lista de DVDs: " << endl;
     LD.imprimir();
-
 }
 
-
+//void Loja::ler(const char *arq)
+//{
+//    string T;
+//    ifstream meu_arq(arq);
+//    getline(meu_arq,T,' ');
+//    if(meu_arq.good()){ //função good retorna true se nao houver erros no arquivo
+//        if(T == "LISTALIVRO"){
+//            LL.ler(meu_arq);
+//            //T.clear();
+//            getline(meu_arq,T,' ');
+//        }
+//        if(T == "LISTACD"){
+//            LC.ler(meu_arq);
+//            //T.clear();
+//            getline(meu_arq,T,' ');
+//        }
+//        if(T == "LISTADVD"){
+//            LD.ler(meu_arq);
+//            //T.clear();
+//            getline(meu_arq,T,' ');
+//        }
+//    }else cerr << "O arquivo passado nao existe. Verifique se o nome esta correto." << endl;
+//    meu_arq.close();
+//}
+//
+void Loja::salvar(const char* arq) const
+{
+    ofstream produto(arq);
+    if(produto.is_open())
+    {
+        cout << "** Escrevendo no arquivo " << arq << "..." << endl;
+        LL.salvar(produto);
+        LC.salvar(produto);
+        LD.salvar(produto);
+    }
+    else
+    {
+        cerr << "Houve um erro no arquivo! \n";
+    }
+    produto.close();
+}

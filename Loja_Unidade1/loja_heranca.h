@@ -16,8 +16,7 @@ protected:
     string nome;
     unsigned preco;
 public:
-    //inline Produto(const char *N="", unsigned P=0): nome(N), preco(P) {}
-    inline Produto(): nome(""), preco(0) {};
+    inline Produto(const char *N="", unsigned P=0): nome(N), preco(P) {}
     inline Produto(string n, unsigned p){criar(n,p);}
     inline Produto(const Produto &P){copiar(P);}
     inline ~Produto(void){limpar();}
@@ -25,7 +24,7 @@ public:
     istream &digitar(istream &I);
     ostream &imprimir(ostream &O) const;
     istream &ler(istream &I);
-    inline ostream &salvar(ostream &O) const{return imprimir(O);}
+    inline ostream &salvar(ostream &O) const{imprimir(O); return O;}
 };
 
 inline istream &operator>>(istream &I, Produto &X)
@@ -47,7 +46,7 @@ public:
     istream &digitar(istream &I);
     ostream &imprimir(ostream &O) const;
     istream &ler(istream &I);
-    inline ostream &salvar(ostream &O) const{return imprimir(O);}
+    inline ostream &salvar(ostream &O) const{imprimir(O); return O;}
 
 };
 
@@ -64,7 +63,7 @@ public:
     istream &digitar(istream &I);
     ostream &imprimir(ostream &O) const;
     istream &ler(istream &I);
-    inline ostream &salvar(ostream &O) const{return imprimir(O);}
+    inline ostream &salvar(ostream &O) const{imprimir(O); return O;}
 };
 
 inline istream &operator>>(istream &I, CD &X){return X.digitar(I);}
@@ -80,7 +79,7 @@ public:
     istream &digitar(istream &I);
     ostream &imprimir(ostream &O) const;
     istream &ler(istream &I);
-    inline ostream &salvar(ostream &O) const{return imprimir(O);}
+    inline ostream &salvar(ostream &O) const{imprimir(O); return O;}
 };
     inline istream &operator>>(istream &I, DVD &X){return X.digitar(I);}
     inline ostream &operator<<(ostream &O, DVD &X){return X.imprimir(O);}
