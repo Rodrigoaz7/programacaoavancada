@@ -58,16 +58,11 @@ ostream &Produto::imprimir(ostream &O) const
 
 istream &Produto::ler(istream &I)
 {
-     I.ignore(numeric_limits<streamsize>::max(),'"');
+    I.ignore(numeric_limits<streamsize>::max(),'"'); //ignorar tudo até encontrar aspas
     //para poder ler as strings
-    double prov;
     getline(I,nome,'"');
-    I.ignore(numeric_limits<streamsize>::max(),'$');
-    if(nome == ""){
-        preco =0;
-    }else{
-        I >> prov;
-    }
+    I.ignore(numeric_limits<streamsize>::max(),'$'); //ignorar tudo até encontrar $
+    I >> preco;
     return I;
 }
 
@@ -104,6 +99,14 @@ ostream &Livro::imprimir(ostream &O) const
     return O;
 }
 
+istream &Livro::ler(istream &I)
+{
+    Produto::ler(I);
+    I.ignore(numeric_limits<streamsize>::max(),'"');
+    getline(I,autor,'"');
+    return I;
+}
+
 /*
     ===============================================
     MÉTODOS E FUNÇÕES DA CLASSE CD
@@ -134,6 +137,14 @@ ostream &CD::imprimir(ostream &O) const
     Produto::imprimir(O); //Chamando o imprimir dos atributos da classe Produto
     O << ';' << faixas;
     return O;
+}
+
+istream &CD::ler(istream &I)
+{
+    Produto::ler(I);
+    I.ignore(numeric_limits<streamsize>::max(),';');
+    I >> faixas;
+    return I;
 }
 
 
@@ -167,6 +178,14 @@ ostream &DVD::imprimir(ostream &O) const
     Produto::imprimir(O); //Chamando o imprimir dos atributos da classe Produto
     O << ';' << duracao;
     return O;
+}
+
+istream &DVD::ler(istream &I)
+{
+    Produto::ler(I);
+    I.ignore(numeric_limits<streamsize>::max(),';');
+    I >> duracao;
+    return I;
 }
 
 /*
@@ -215,17 +234,27 @@ void ListaLivro::excluir(unsigned id)
 
 void ListaLivro::imprimir() const
 {
-    cout << "============ LISTA DE LIVROS ================" << endl;
-    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
-    cout << "=============================================" << endl;
+    cout << "LISTALIVRO " << N << endl;
+    for(unsigned i=0; i<N; i++) cout << i << ") " << "L: " << x[i] << endl;
+    cout << endl;
 }
 
 void ListaLivro::salvar(ostream &O) const
 {
     O << "LISTALIVRO " << N << endl;
-    for(unsigned i=0; i<N; i++) O << "L: " << x[i];
+    for(unsigned i=0; i<N; i++) O << i << ") " << "L: " << x[i] << endl;
     O << endl;
 }
+
+void ListaLivro::ler(istream &I)
+{
+    Livro prov;
+    I.ignore(numeric_limits<streamsize>::max(),' ');
+    I >> N;
+    prov.ler(I);
+    //incluir(prov);
+}
+
 /*
     ===============================================
     MÉTODOS E FUNÇÕES DA CLASSE LISTACD
@@ -268,16 +297,23 @@ void ListaCD::excluir(unsigned id)
 
 void ListaCD::imprimir() const
 {
-    cout << "============ LISTA DE CDs ================" << endl;
-    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
-    cout << "=============================================" << endl;
+    cout << "LISTACD " << N << endl;
+    for(unsigned i=0; i<N; i++) cout << i << ") " << "C: " << x[i] << endl;
+    cout << endl;
 }
 
 void ListaCD::salvar(ostream &O) const
 {
     O << "LISTACD " << N << endl;
-    for(unsigned i=0; i<N; i++) O << "C: " << x[i];
+    for(unsigned i=0; i<N; i++) O << i << ") " << "C: " << x[i] << endl;
     O << endl;
+}
+
+void ListaCD::ler(istream &I)
+{
+    I.ignore(numeric_limits<streamsize>::max(),' ');
+    I >> N;
+    x->CD::ler(I);
 }
 
 /*
@@ -322,16 +358,23 @@ void ListaDVD::excluir(unsigned id)
 
 void ListaDVD::imprimir() const
 {
-    cout << "============== LISTA DE DVDs ================" << endl;
-    for(unsigned i=0; i<N; i++) cout << x[i] << endl;
-    cout << "=============================================" << endl;
+    cout << "LISTADVD " << N << endl;
+    for(unsigned i=0; i<N; i++) cout  << i << ") " << "D: " << x[i] << endl;
+    cout << endl;
 }
 
 void ListaDVD::salvar(ostream &O) const
 {
     O << "LISTADVD " << N << endl;
-    for(unsigned i=0; i<N; i++) O << "D: " << x[i];
+    for(unsigned i=0; i<N; i++) O << i << ") " << "D: " << x[i] << endl;
     O << endl;
+}
+
+void ListaDVD::ler(istream &I)
+{
+    I.ignore(numeric_limits<streamsize>::max(),' ');
+    I >> N;
+    x->DVD::ler(I);
 }
 
 /*
@@ -347,31 +390,27 @@ void Loja::imprimir() const
     LD.imprimir();
 }
 
-//void Loja::ler(const char *arq)
-//{
-//    string T;
-//    ifstream meu_arq(arq);
-//    getline(meu_arq,T,' ');
-//    if(meu_arq.good()){ //função good retorna true se nao houver erros no arquivo
-//        if(T == "LISTALIVRO"){
-//            LL.ler(meu_arq);
-//            //T.clear();
-//            getline(meu_arq,T,' ');
-//        }
-//        if(T == "LISTACD"){
-//            LC.ler(meu_arq);
-//            //T.clear();
-//            getline(meu_arq,T,' ');
-//        }
-//        if(T == "LISTADVD"){
-//            LD.ler(meu_arq);
-//            //T.clear();
-//            getline(meu_arq,T,' ');
-//        }
-//    }else cerr << "O arquivo passado nao existe. Verifique se o nome esta correto." << endl;
-//    meu_arq.close();
-//}
-//
+void Loja::ler(const char *arq)
+{
+    ifstream produto(arq);
+    if(produto.is_open())
+    {
+        string prov;
+        produto >> prov;
+        if (prov != "LISTALIVRO" && prov != "LISTACD" && prov != "LISTADVD")
+        {
+            cerr << "Arquivo com cabecalho invalido\n";
+        }
+        else
+        {
+            LL.ler(produto);
+            LC.ler(produto);
+            LD.ler(produto);
+            cout << "Arquivo(s) lido(s) com sucesso ! \n ";
+        }
+    }
+}
+
 void Loja::salvar(const char* arq) const
 {
     ofstream produto(arq);

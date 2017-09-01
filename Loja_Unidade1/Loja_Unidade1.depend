@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1504112827 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\main.cpp
+1504223003 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\main.cpp
 	<iostream>
 	<string>
 	<limits>
@@ -8,7 +8,7 @@
 	<stdlib.h>
 	"loja_heranca.h"
 
-1504218959 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.cpp
+1504223703 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\loja_unidade1\loja_heranca.cpp
 	<string>
 	<cstring>
 	<iostream>
