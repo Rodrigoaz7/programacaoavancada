@@ -1,0 +1,10 @@
+LISTALIVRO 1
+0) L: "livro";$10;"autor"
+
+LISTACD 2
+0) C: "cd1";$5;10
+1) C: "cd2";$7;12
+
+LISTADVD 1
+0) D: "dvd1";$80;200
+

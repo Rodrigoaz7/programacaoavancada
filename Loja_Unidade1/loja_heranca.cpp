@@ -14,6 +14,7 @@ void mensagem(string mens){cout << mens << endl; system("Pause"); system("cls");
     MÉTODOS E FUNÇÕES DA CLASSE PRODUTO
     ===============================================
 */
+
 void Produto::criar(string n, unsigned p)
 {
     if(p<=0 || n=="")
@@ -256,16 +257,31 @@ void ListaLivro::salvar(ostream &O) const
 void ListaLivro::ler(istream &I)
 {
     unsigned tam;
+    char prov2;
+    int j;
     Livro prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
     I >> tam;
     I.ignore(numeric_limits<streamsize>::max(),'\n');
     for(unsigned i=0; i<tam; i++)
     {
-        prov.ler(I);
-        incluir(prov);
-        I.ignore(numeric_limits<streamsize>::max(),'\n');
+        I >> j;
+        if(j < 0){cerr << "Indice invalido\n"; return;}
+        else
+        {
+            I.ignore(numeric_limits<streamsize>::max(),' ');
+            I >> prov2;
+            if(prov2 != 'L') {cerr << "Letra do produto invalida! \n"; return;}
+            else
+            {
+                I.ignore(numeric_limits<streamsize>::max(),' ');
+                prov.ler(I);
+                incluir(prov);
+                I.ignore(numeric_limits<streamsize>::max(),'\n');
+            }
+        }
     }
+    cout << "Arquivo(s) lido(s) com sucesso ! \n ";
 }
 
 /*
@@ -327,20 +343,31 @@ void ListaCD::salvar(ostream &O) const
 void ListaCD::ler(istream &I)
 {
     unsigned tam;
-    //string teste;
-    //I.ignore(numeric_limits<streamsize>::max(),' ');
-    //I >> teste;
-    //if(teste != "LISTACD") {cerr << "Cabecalho invalido\n";return;}
+    char prov2;
+    int j;
     CD prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
     I >> tam;
     I.ignore(numeric_limits<streamsize>::max(),'\n');
     for(unsigned i=0; i<tam; i++)
     {
-        prov.ler(I);
-        incluir(prov);
-        I.ignore(numeric_limits<streamsize>::max(),'\n');
+        I >> j;
+        if(j < 0){cerr << "Indice invalido\n"; return;}
+        else
+        {
+            I.ignore(numeric_limits<streamsize>::max(),' ');
+            I >> prov2;
+            if(prov2 != 'C') {cerr << "Letra do produto invalida! \n"; return;}
+            else
+            {
+                I.ignore(numeric_limits<streamsize>::max(),' ');
+                prov.ler(I);
+                incluir(prov);
+                I.ignore(numeric_limits<streamsize>::max(),'\n');
+            }
+        }
     }
+    cout << "Arquivo(s) lido(s) com sucesso ! \n ";
 }
 
 /*
@@ -402,20 +429,31 @@ void ListaDVD::salvar(ostream &O) const
 void ListaDVD::ler(istream &I)
 {
     unsigned tam;
-    //string teste;
-    //I.ignore(numeric_limits<streamsize>::max(),' ');
-    //I >> teste;
-    //if(teste != "LISTACD") {cerr << "Cabecalho invalido\n";return;}
+    char prov2;
+    int j;
     DVD prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
     I >> tam;
     I.ignore(numeric_limits<streamsize>::max(),'\n');
     for(unsigned i=0; i<tam; i++)
     {
-        prov.ler(I);
-        incluir(prov);
-        I.ignore(numeric_limits<streamsize>::max(),'\n');
+        I >> j;
+        if(j < 0){cerr << "Indice invalido\n";return;}
+        else
+        {
+            I.ignore(numeric_limits<streamsize>::max(),' ');
+            I >> prov2;
+            if(prov2 != 'D') {cerr << "Letra do produto invalida! \n";return;}
+            else
+            {
+                I.ignore(numeric_limits<streamsize>::max(),' ');
+                prov.ler(I);
+                incluir(prov);
+                I.ignore(numeric_limits<streamsize>::max(),'\n');
+            }
+        }
     }
+    cout << "Arquivo(s) lido(s) com sucesso ! \n ";
 }
 
 /*
@@ -447,7 +485,6 @@ void Loja::ler(const char *arq)
             LL.ler(produto);
             LC.ler(produto);
             LD.ler(produto);
-            cout << "Arquivo(s) lido(s) com sucesso ! \n ";
         }
     }
     else
