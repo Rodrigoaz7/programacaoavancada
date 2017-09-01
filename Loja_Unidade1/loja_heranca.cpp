@@ -3,8 +3,11 @@
 #include <iostream>
 #include <limits>
 #include <fstream>
+#include <stdlib.h>
 #include "loja_heranca.h"
 using namespace std;
+
+void mensagem(string mens){cout << mens << endl; system("Pause"); system("cls");}
 
 /*
     ===============================================
@@ -52,7 +55,9 @@ istream &Produto::digitar(istream &I)
 
 ostream &Produto::imprimir(ostream &O) const
 {
-    O << '"' << nome << '"' << ';' <<  '$' << float(preco)/100.0;
+    double prov;
+    prov = preco/100.0;
+    O << '"' << nome << '"' << ';' <<  '$' << prov;
     return O;
 }
 
@@ -85,7 +90,7 @@ Livro::~Livro(void)
 istream &Livro::digitar(istream &I)
 {
     Produto::digitar(I);
-    cout << endl << "Nome do autor: " << endl;
+    cout << "Nome do autor: " << endl;
     I.ignore(numeric_limits<streamsize>::max(),'\n');
     getline(I,autor);
     if(autor == "") cerr << "Livro sem autor ";
@@ -126,7 +131,7 @@ CD::~CD(void)
 istream &CD::digitar(istream &I)
 {
     Produto::digitar(I);
-    cout << endl << "Numero de faixas: " << endl;
+    cout << "Numero de faixas: " << endl;
     I >> faixas;
     if(faixas <= 0) cerr << "CD sem faixas ";
     return I;
@@ -167,7 +172,7 @@ DVD::~DVD(void)
 istream &DVD::digitar(istream &I)
 {
     Produto::digitar(I);
-    cout << endl << "Duracao: " << endl;
+    cout << "Duracao: " << endl;
     I >> duracao;
     if(duracao <= 0) cerr << "DVD virgem !!! \n";
     return I;
@@ -212,11 +217,12 @@ void ListaLivro::incluir(const Livro &L)
     for(unsigned i=0; i<N;i++) prov.x[i] = x[i];
     prov.x[prov.N-1] = L;
     copiar(prov);
+    mensagem("Livro adicionado com sucesso !");
 }
 
 void ListaLivro::excluir(unsigned id)
 {
-    if(id > N) {cerr << "indice invalido!\n"; return;}
+    if(id >= N) {cerr << "indice invalido!\n"; return;}
     else {
         ListaLivro prov(N-1);
         unsigned j=0;
@@ -230,6 +236,7 @@ void ListaLivro::excluir(unsigned id)
         }
         copiar(prov);
     }
+    mensagem("Livro deletado com sucesso !");
 }
 
 void ListaLivro::imprimir() const
@@ -248,11 +255,17 @@ void ListaLivro::salvar(ostream &O) const
 
 void ListaLivro::ler(istream &I)
 {
+    unsigned tam;
     Livro prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
-    I >> N;
-    prov.ler(I);
-    //incluir(prov);
+    I >> tam;
+    I.ignore(numeric_limits<streamsize>::max(),'\n');
+    for(unsigned i=0; i<tam; i++)
+    {
+        prov.ler(I);
+        incluir(prov);
+        I.ignore(numeric_limits<streamsize>::max(),'\n');
+    }
 }
 
 /*
@@ -279,6 +292,7 @@ void ListaCD::incluir(const CD &C)
     for(unsigned i=0; i<N;i++) prov.x[i] = x[i];
     prov.x[prov.N-1] = C;
     copiar(prov);
+    mensagem("CD adicionado com sucesso !");
 }
 
 void ListaCD::excluir(unsigned id)
@@ -293,6 +307,7 @@ void ListaCD::excluir(unsigned id)
         }
         copiar(prov);
     }
+    mensagem("CD deletado com sucesso !");
 }
 
 void ListaCD::imprimir() const
@@ -311,9 +326,21 @@ void ListaCD::salvar(ostream &O) const
 
 void ListaCD::ler(istream &I)
 {
+    unsigned tam;
+    //string teste;
+    //I.ignore(numeric_limits<streamsize>::max(),' ');
+    //I >> teste;
+    //if(teste != "LISTACD") {cerr << "Cabecalho invalido\n";return;}
+    CD prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
-    I >> N;
-    x->CD::ler(I);
+    I >> tam;
+    I.ignore(numeric_limits<streamsize>::max(),'\n');
+    for(unsigned i=0; i<tam; i++)
+    {
+        prov.ler(I);
+        incluir(prov);
+        I.ignore(numeric_limits<streamsize>::max(),'\n');
+    }
 }
 
 /*
@@ -340,6 +367,7 @@ void ListaDVD::incluir(const DVD &D)
     for(unsigned i=0; i<N;i++) prov.x[i] = x[i];
     prov.x[prov.N-1] = D;
     copiar(prov);
+    mensagem("DVD adicionado com sucesso !");
 }
 
 void ListaDVD::excluir(unsigned id)
@@ -354,6 +382,7 @@ void ListaDVD::excluir(unsigned id)
         }
         copiar(prov);
     }
+    mensagem("DVD deletado com sucesso !");
 }
 
 void ListaDVD::imprimir() const
@@ -372,9 +401,21 @@ void ListaDVD::salvar(ostream &O) const
 
 void ListaDVD::ler(istream &I)
 {
+    unsigned tam;
+    //string teste;
+    //I.ignore(numeric_limits<streamsize>::max(),' ');
+    //I >> teste;
+    //if(teste != "LISTACD") {cerr << "Cabecalho invalido\n";return;}
+    DVD prov;
     I.ignore(numeric_limits<streamsize>::max(),' ');
-    I >> N;
-    x->DVD::ler(I);
+    I >> tam;
+    I.ignore(numeric_limits<streamsize>::max(),'\n');
+    for(unsigned i=0; i<tam; i++)
+    {
+        prov.ler(I);
+        incluir(prov);
+        I.ignore(numeric_limits<streamsize>::max(),'\n');
+    }
 }
 
 /*
@@ -408,6 +449,10 @@ void Loja::ler(const char *arq)
             LD.ler(produto);
             cout << "Arquivo(s) lido(s) com sucesso ! \n ";
         }
+    }
+    else
+    {
+        cerr << "Arquivo nao existe! \n";
     }
 }
 
