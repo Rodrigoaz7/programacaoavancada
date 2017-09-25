@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1493925537 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\sudoku\console.cpp
+	<iostream>
+	<windows.h>
+	"console.h"
+
+1493925701 c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\sudoku\console.h
+
+1506380440 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\sudoku\sudoku.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<conio.h>
+	<stack>
+	"console.h"
+	"sudoku.h"
+
+1493926799 c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\sudoku\sudoku.h
+	<stack>
+
+1493926100 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\sudoku\sudoku_main.cpp
+	<iostream>
+	<cstdlib>
+	"console.h"
+	"sudoku.h"
+
