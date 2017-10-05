@@ -280,14 +280,13 @@ unsigned Sudoku::num_casas_vazias() const
 // Determina automaticamente a solucao do tabuleiro (preenche as casas vazias)
 void Sudoku::resolver(void)
 {
-  Term.gotoYX(20,4);
-  Term.limpar_linha();
+//  Term.gotoYX(20,4);
+//  Term.limpar_linha();
   Sudoku S;
   stack<Sudoku> F;
   F.push(*this);//o primeiro da pilha recebe a origem
   int num_testados = 0;
-  bool encontrou_solucao = false;
-  int i = 0, j = 0;
+  unsigned i = 0, j = 0;
   do{
         S = F.top(); //Sudoku atual recebe o topo da pilha
         F.pop();// o topo da pilha é removida
@@ -295,7 +294,7 @@ void Sudoku::resolver(void)
             S.imprimir(false);
             return;
         }
-        while(S.x[i][j] != 0){//procura a proxima casa vasia no sudoku
+        while(S.x[i][j] != 0){//procura a proxima casa vazia no sudoku
             j++;
             if(j == 9){
                 j = 0;
@@ -314,10 +313,10 @@ void Sudoku::resolver(void)
                 num_testados++;
             }
         }
-        cout << "ainda falta analizar: " << F.size() << endl;
-
+       // cout << "ainda falta analizar: " << F.size() << endl;
     }while(!F.top().fim_de_jogo() && !F.empty());
     *this = F.top();
+    Term.limpar_linha();
     cout << "iteracoes: " << num_testados << endl;
     imprimir(false);
     return;
