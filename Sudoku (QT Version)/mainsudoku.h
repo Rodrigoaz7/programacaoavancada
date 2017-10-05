@@ -34,7 +34,9 @@ private:
     //Função de impressão da tabela
     void imprimir_tabela(Sudoku &S);
     //Função para desabilitar Valores pré-determinados do Sudoku
-    void desabilitar_posicoes(Sudoku &S);
+    void desabilitar_posicoes();
+    //Função para determinar se o usuário venceu a partida
+    void fim_de_jogo();
 
 };
 

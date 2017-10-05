@@ -32,7 +32,7 @@ void MainSudoku::imprimir_tabela(Sudoku &S)
 }
 
 //Função para desabilitar Valores pré-determinados do Sudoku
-void MainSudoku::desabilitar_posicoes(Sudoku &S)
+void MainSudoku::desabilitar_posicoes()
 {
     for(int i=0;i<9;i++)
     {
@@ -66,15 +66,15 @@ void MainSudoku::on_actionReiniciar_triggered()
     Sudoku SNovo;
     ui->tableSudoku->blockSignals(true); //impedir o sinal de não deixar iniciar o jogo
     imprimir_tabela(SNovo);
-    desabilitar_posicoes(SNovo);
+    desabilitar_posicoes();
     ui->tableSudoku->blockSignals(false); //Voltar o sinal à ativa
 }
 
-void MainSudoku::on_pushButton_clicked() //Botão de jogar/reiniciar
+void MainSudoku::on_pushButton_clicked() //Botão de iniciar jogo
 {
      ui->tableSudoku->blockSignals(true); //impedir o sinal de não deixar iniciar o jogo
      imprimir_tabela(S);
-     desabilitar_posicoes(S);
+     desabilitar_posicoes();
      ui->tableSudoku->blockSignals(false); //Voltar o sinal à ativa
 }
 
@@ -83,6 +83,7 @@ void MainSudoku::on_pushButton_2_clicked() //Resolver
     ui->tableSudoku->blockSignals(true);
     S.resolver();
     imprimir_tabela(S);
+    fim_de_jogo();
     ui->tableSudoku->blockSignals(false);
 }
 
@@ -98,9 +99,22 @@ void MainSudoku::on_tableSudoku_cellChanged(int row, int column)
     }
     else
     {
-        //QMessageBox msg;
+        QMessageBox msg;
         ui->tableSudoku->item(row,column)->setText("0"); //Se nao for valida, zera.
-        //msg.setText("Valor inválido para esta posição!");
-        //msg.exec();
+        msg.setText("Valor inválido para esta posição!");
+        msg.exec();
     }
+    fim_de_jogo();
+}
+
+void MainSudoku::fim_de_jogo() //Função para verificar o fim do jogo
+{
+    unsigned casas_vazias = S.num_casas_vazias();
+    if(casas_vazias == 0)
+    {
+        QMessageBox msg;
+        msg.setText("Parabéns, você ganhou!");
+        msg.exec();
+    }
+    on_actionReiniciar_triggered(); //Ao terminar, reinicia a partida
 }
