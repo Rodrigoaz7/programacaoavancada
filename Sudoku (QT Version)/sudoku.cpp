@@ -140,12 +140,12 @@ unsigned Sudoku::num_casas_vazias() const
 }
 
 // Determina automaticamente a solucao do tabuleiro (preenche as casas vazias)
-void Sudoku::resolver(void)
+void Sudoku::resolver(int &n)
 {
     Sudoku S;
     stack<Sudoku> F;
     F.push(*this);//o primeiro da pilha recebe a origem
-    int num_testados = 0;
+    //int num_testados = 0;
     unsigned i = 0, j = 0;
     do{
         S = F.top(); //Sudoku atual recebe o topo da pilha
@@ -170,12 +170,12 @@ void Sudoku::resolver(void)
             S.fazer_jogada(J); //Se a jogada � valida, ent�o ela � feita.
             F.push(S);//Se a jogada � feita, � colocado outro Sudoku no topo da pilha
             S.x[i][j] = 0; //Esta posi��o recebe zero, para que seja testado outro tabuleiro com outro v
-            num_testados++;
+            n++;
         }
     }
 }while(!F.top().fim_de_jogo() && !F.empty());
     *this = F.top();
-    cout << "iteracoes: " << num_testados << endl;
+    cout << "iteracoes: " << n << endl;
     imprimir(false);
     return;
 }

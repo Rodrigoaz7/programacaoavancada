@@ -74,6 +74,7 @@
       </property>
       <property name="font">
        <font>
+        <family>Calibri</family>
         <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -112,6 +113,9 @@
         <height>0</height>
        </size>
       </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
       <property name="gridStyle">
        <enum>Qt::SolidLine</enum>
       </property>
@@ -133,17 +137,26 @@
       <attribute name="horizontalHeaderVisible">
        <bool>false</bool>
       </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>100</number>
+       <number>76</number>
       </attribute>
       <attribute name="horizontalHeaderHighlightSections">
        <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>50</number>
       </attribute>
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>28</number>
       </attribute>
       <attribute name="verticalHeaderMinimumSectionSize">
        <number>23</number>
@@ -173,8 +186,14 @@
        <property name="text">
         <string/>
        </property>
+       <property name="textAlignment">
+        <set>AlignCenter</set>
+       </property>
       </item>
       <item row="2" column="0">
+       <property name="text">
+        <string/>
+       </property>
        <property name="textAlignment">
         <set>AlignCenter</set>
        </property>
@@ -186,7 +205,7 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Novo jogo</string>
+         <string>Iniciar Jogo</string>
         </property>
        </widget>
       </item>

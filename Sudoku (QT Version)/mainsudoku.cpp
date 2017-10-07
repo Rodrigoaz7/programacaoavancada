@@ -1,9 +1,6 @@
 #include "mainsudoku.h"
 #include "ui_mainsudoku.h"
 #include "sudoku.h"
-#include <QFileDialog>
-#include <QFile>
-#include <QVector>
 #include <QMessageBox>
 #include <QTextStream>
 #include <iostream>
@@ -27,6 +24,12 @@ void MainSudoku::imprimir_tabela(Sudoku &S)
             QTableWidgetItem *theItem = new QTableWidgetItem();
             theItem->setData(Qt::EditRole, myNumber); //Gambiarra para preencher números inteiros
             ui->tableSudoku->setItem(i, j, theItem); //Setando itens na tabela
+            theItem->setTextAlignment(Qt::AlignCenter);
+            if(ui->tableSudoku->item(i,j)->text() != '0')
+            {
+                ui->tableSudoku->item(i,j)->setBackground(Qt::darkCyan);
+                ui->tableSudoku->item(i,j)->setTextColor(Qt::white);
+            }
         }
     }
 }
@@ -43,6 +46,18 @@ void MainSudoku::desabilitar_posicoes()
                  ui->tableSudoku->item(i,j)->setFlags(ui->tableSudoku->item(i,j)->flags() & ~Qt::ItemIsEditable);
               }
         }
+    }
+}
+
+void MainSudoku::fim_de_jogo() //Função para verificar o fim do jogo
+{
+    unsigned casas_vazias = S.num_casas_vazias();
+    if(casas_vazias == 0)
+    {
+        QMessageBox msg;
+        msg.setText("Parabéns, você ganhou!");
+        msg.exec();
+        on_actionReiniciar_triggered(); //Ao terminar, reinicia a partida
     }
 }
 
@@ -63,9 +78,10 @@ void MainSudoku::on_actionSair_triggered()
 
 void MainSudoku::on_actionReiniciar_triggered()
 {
-    Sudoku SNovo;
+    Sudoku SNovo; //Cria novo objeto (novo jogo)
+    S = SNovo;
     ui->tableSudoku->blockSignals(true); //impedir o sinal de não deixar iniciar o jogo
-    imprimir_tabela(SNovo);
+    imprimir_tabela(S);
     desabilitar_posicoes();
     ui->tableSudoku->blockSignals(false); //Voltar o sinal à ativa
 }
@@ -80,10 +96,14 @@ void MainSudoku::on_pushButton_clicked() //Botão de iniciar jogo
 
 void MainSudoku::on_pushButton_2_clicked() //Resolver
 {
+    int num_iteracoes = 0;
     ui->tableSudoku->blockSignals(true);
-    S.resolver();
+    S.resolver(num_iteracoes);
     imprimir_tabela(S);
-    fim_de_jogo();
+
+    QMessageBox msg;
+    msg.setText(QString::number(num_iteracoes) + " iterações .");
+    msg.exec();
     ui->tableSudoku->blockSignals(false);
 }
 
@@ -105,16 +125,4 @@ void MainSudoku::on_tableSudoku_cellChanged(int row, int column)
         msg.exec();
     }
     fim_de_jogo();
-}
-
-void MainSudoku::fim_de_jogo() //Função para verificar o fim do jogo
-{
-    unsigned casas_vazias = S.num_casas_vazias();
-    if(casas_vazias == 0)
-    {
-        QMessageBox msg;
-        msg.setText("Parabéns, você ganhou!");
-        msg.exec();
-    }
-    on_actionReiniciar_triggered(); //Ao terminar, reinicia a partida
 }
