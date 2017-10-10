@@ -145,7 +145,7 @@ void Sudoku::resolver(int &n, int &tabuleiros_restantes, int &tabuleiros_testado
     do{
         S = F.top(); //Sudoku atual recebe o topo da pilha
         tabuleiros_testados++;
-        F.pop();// o topo da pilha � removida
+        F.pop();// o topo da pilha eh removida
         if(S.fim_de_jogo()){
             S.imprimir(false);
             return;
@@ -177,11 +177,11 @@ void Sudoku::resolver(int &n, int &tabuleiros_restantes, int &tabuleiros_testado
             return;
         }
         cout << "Tabuleiros possiveis " << F.size() << endl;
-}while(!F.top().fim_de_jogo());
-    tabuleiros_restantes = F.size();
-    *this = F.top();
-    cout << "iteracoes: " << n << endl;
-    cout << "n de tabuleiros testados: " << tabuleiros_testados << endl;
-    imprimir(false);
-    return;
+    }while(!F.top().fim_de_jogo());
+        tabuleiros_restantes = F.size();
+        *this = F.top();
+        cout << "iteracoes: " << n << endl;
+        cout << "n de tabuleiros testados: " << tabuleiros_testados << endl;
+        imprimir(false);
+        return;
 }

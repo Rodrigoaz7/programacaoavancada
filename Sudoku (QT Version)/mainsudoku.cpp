@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include <iostream>
+#include <QColor>
 using namespace std;
 
 MainSudoku::MainSudoku(QWidget *parent) :
@@ -12,6 +13,7 @@ MainSudoku::MainSudoku(QWidget *parent) :
 {
     ui->setupUi(this);
 }
+
 void MainSudoku::imprimir_tabela(Sudoku &S)
 {
     int myNumber;
@@ -24,11 +26,19 @@ void MainSudoku::imprimir_tabela(Sudoku &S)
             QTableWidgetItem *theItem = new QTableWidgetItem();
             theItem->setData(Qt::EditRole, myNumber); //Gambiarra para preencher números inteiros
             ui->tableSudoku->setItem(i, j, theItem); //Setando itens na tabela
-            theItem->setTextAlignment(Qt::AlignCenter);
+            theItem->setTextAlignment(Qt::AlignCenter); //Deixar números centralizados
+
+            //Pintar blocos do sudoku
+            if(i<3 || i>5)
+            {
+                if(j<3 || j>5) ui->tableSudoku->item(i,j)->setBackground(QColor(50,255,255));
+            }
+            else if(j>=3 && j<=5) ui->tableSudoku->item(i,j)->setBackground(QColor(50,255,255));
+
+            //Mudar fonte de números nao-editaveis
             if(ui->tableSudoku->item(i,j)->text() != '0')
             {
-                ui->tableSudoku->item(i,j)->setBackground(Qt::darkCyan);
-                ui->tableSudoku->item(i,j)->setTextColor(Qt::white);
+                ui->tableSudoku->item(i,j)->setTextColor(Qt::darkGray);
             }
         }
     }
