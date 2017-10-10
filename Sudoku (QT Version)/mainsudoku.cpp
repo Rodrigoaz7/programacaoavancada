@@ -97,13 +97,25 @@ void MainSudoku::on_pushButton_clicked() //Botão de iniciar jogo
 void MainSudoku::on_pushButton_2_clicked() //Resolver
 {
     int num_iteracoes = 0;
+    int tabuleiros_testados = 0;
+    int tabuleiros_restantes = 0;
     ui->tableSudoku->blockSignals(true);
-    S.resolver(num_iteracoes);
+    S.resolver(num_iteracoes, tabuleiros_restantes, tabuleiros_testados);
     imprimir_tabela(S);
 
     QMessageBox msg;
-    msg.setText(QString::number(num_iteracoes) + " iterações .");
-    msg.exec();
+    if(tabuleiros_testados != 0) // Se houver solução
+    {
+        msg.setText("Resolvido em " + QString::number(num_iteracoes) + " jogadas / "
+                    + QString::number(tabuleiros_restantes) + " tabuleiros restantes / "
+                    + QString::number(tabuleiros_testados) + " tabuleiros testados ");
+        msg.exec();
+    }
+    else //Se não houver solução
+    {
+        msg.setText("Sudoku sem solução. Feitas " + QString::number(num_iteracoes) + " jogadas");
+        msg.exec();
+    }
     ui->tableSudoku->blockSignals(false);
 }
 
@@ -114,15 +126,14 @@ void MainSudoku::on_tableSudoku_cellChanged(int row, int column)
     if(S.jogada_valida(Jogada(row,column,num))) //Se o numero for válido
     {
         S.fazer_jogada(Jogada(row,column,num));//Faz jogada (adiciona na matriz)
-        S.imprimir(false);
-        //cout << row << endl << column << endl << num << endl; //Apenas p/ teste
+        S.imprimir(false); // Apenas para teste
     }
     else
     {
-        QMessageBox msg;
         ui->tableSudoku->item(row,column)->setText("0"); //Se nao for valida, zera.
-        msg.setText("Valor inválido para esta posição!");
-        msg.exec();
+        QMessageBox msg_erro;
+        msg_erro.setText("Valor inválido para esta posição!");
+        msg_erro.exec();
     }
     fim_de_jogo();
 }

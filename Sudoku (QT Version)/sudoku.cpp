@@ -2,13 +2,9 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
-#include <QFile>
-#include <QVector>
-#include <QIODevice>
 #include <QString>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QFileDialog>
 #include <stack>
 #include "sudoku.h"
 
@@ -140,42 +136,52 @@ unsigned Sudoku::num_casas_vazias() const
 }
 
 // Determina automaticamente a solucao do tabuleiro (preenche as casas vazias)
-void Sudoku::resolver(int &n)
+void Sudoku::resolver(int &n, int &tabuleiros_restantes, int &tabuleiros_testados)
 {
     Sudoku S;
     stack<Sudoku> F;
     F.push(*this);//o primeiro da pilha recebe a origem
-    //int num_testados = 0;
     unsigned i = 0, j = 0;
     do{
         S = F.top(); //Sudoku atual recebe o topo da pilha
+        tabuleiros_testados++;
         F.pop();// o topo da pilha � removida
         if(S.fim_de_jogo()){
             S.imprimir(false);
             return;
-    }
-    while(S.x[i][j] != 0){//procura a proxima casa vazia no sudoku
-        j++;
-        if(j == 9){
-            j = 0;
-            i++;
         }
-        if(i == 9){
-            i = 0;
+        while(S.x[i][j] != 0){//procura a proxima casa vazia no sudoku
+            j++;
+            if(j == 9){
+                j = 0;
+                i++;
+            }
+            if(i == 9){
+                i = 0;
+            }
         }
-    }
-    for(int v =1; v<10;v++){//faz os "filhos" do primeiro da pilha
-        Jogada J(i,j,v);
-        if(S.jogada_valida(J)){
-            S.fazer_jogada(J); //Se a jogada � valida, ent�o ela � feita.
-            F.push(S);//Se a jogada � feita, � colocado outro Sudoku no topo da pilha
-            S.x[i][j] = 0; //Esta posi��o recebe zero, para que seja testado outro tabuleiro com outro v
-            n++;
+        for(int v =1; v<10;v++){//faz os "filhos" do primeiro da pilha
+            Jogada J(i,j,v);
+            if(S.jogada_valida(J)){
+                S.fazer_jogada(J); //Se a jogada � valida, ent�o ela � feita.
+                F.push(S);//Se a jogada � feita, � colocado outro Sudoku no topo da pilha
+                S.x[i][j] = 0; //Esta posi��o recebe zero, para que seja testado outro tabuleiro com outro v
+                n++;
+            }
         }
-    }
-}while(!F.top().fim_de_jogo() && !F.empty());
+        if(F.empty()) //Se nao houver sudokus ao final do while, entao nao ha solucao
+        {
+            cout << "Sudoku sem solucao " << endl;
+            tabuleiros_restantes = F.size();
+            tabuleiros_testados = 0;
+            return;
+        }
+        cout << "Tabuleiros possiveis " << F.size() << endl;
+}while(!F.top().fim_de_jogo());
+    tabuleiros_restantes = F.size();
     *this = F.top();
     cout << "iteracoes: " << n << endl;
+    cout << "n de tabuleiros testados: " << tabuleiros_testados << endl;
     imprimir(false);
     return;
 }

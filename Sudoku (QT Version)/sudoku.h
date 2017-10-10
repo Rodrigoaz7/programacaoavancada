@@ -38,7 +38,7 @@ public:
   // Retorna o numero de casas vazias no tabuleiro
   unsigned num_casas_vazias() const;
   // Determina automaticamente a solucao do tabuleiro (preenche as casas vazias)
-  void resolver(int &n);
+  void resolver(int &n, int &tabuleiros_restantes, int &tabuleiros_testados);
 };
 
 #endif // SUDOKU_H
