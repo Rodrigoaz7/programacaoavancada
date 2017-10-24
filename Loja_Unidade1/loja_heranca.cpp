@@ -476,6 +476,7 @@ void Loja::ler(const char *arq)
     {
         string prov;
         produto >> prov;
+        cout << prov;
         if (prov != "LISTALIVRO" && prov != "LISTACD" && prov != "LISTADVD")
         {
             cerr << "Arquivo com cabecalho invalido\n";
