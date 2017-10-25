@@ -129,7 +129,7 @@ bool Porta_NOT::ler(istream &I)
 
 ostream &Porta_NOT::imprimir(ostream &O) const
 {
-    O << "NT";
+   O << "NT";
    return O;
 }
 
@@ -720,13 +720,13 @@ void Circuito::ler(const char *file_name)
 }
 ostream &Circuito::imprimir(ostream &O) const
 {
-    /*O << "CIRCUITO:";
-    O << Nin << " " << Nout << " " << Nportas << endl;
-    O << "PORTAS:" << endl;*/
+    //O << "CIRCUITO:";
+    //O << Nin << " " << Nout << " " << Nportas << endl;
+    /*O << "PORTAS:" << endl;*/
     for(unsigned i = 0; i<Nportas; i++){
-        //O << i+1;
+        //i+1;
         portas[i]->imprimir(O);
-        //O << endl;
+        O << endl;
     }
     /*O << "SAIDAS:" << endl;
     for(unsigned i = 0; i<Nout; i++){
@@ -787,7 +787,8 @@ void Circuito::imprimirEntradas(void) const
         }
     }
 }
-void Circuito::imprimirSaidas(void) const
+
+void Circuito::imprimirSaidas(bool_3S saida[])
 {
     cout << "SAIDAS: ";
     for(unsigned i = 0; i<Nout; i++){
@@ -958,7 +959,7 @@ bool Circuito::verificar(void) const
     }
     return true;
 }
-/*void Circuito::gerarTabela(void)
+void Circuito::gerarTabela(void)
 {
     int lim;
     lim = pow(3,Nin);
@@ -966,7 +967,6 @@ bool Circuito::verificar(void) const
         calcularEntradas(i);
         imprimirEntradas();
         simular();
-        imprimirSaidas();
-        cout <<endl;
+        //imprimirSaidas();
     }
-}*/
+}

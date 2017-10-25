@@ -26,6 +26,10 @@ private slots:
 
     void on_actionSalvar_triggered();
 
+    void on_actionGerar_tabela_triggered();
+
+    void on_actionNovo_triggered();
+
 private:
     Ui::MainCircuito *ui;
     QLabel NumIn;     // Exibe o numero de entradas do circuito

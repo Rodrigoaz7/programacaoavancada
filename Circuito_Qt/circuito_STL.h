@@ -137,8 +137,8 @@ private:
   void alocar(unsigned NI, unsigned NO, unsigned NP);  // ATENCAO: fora de construtor, sempre chamar antes limpar()
   void copiar(const Circuito &C);                      // ATENCAO: fora de construtor, sempre chamar antes limpar()
   bool verificar(void) const;
-  void calcularEntradas(unsigned I);      //calcular as entradas com o id I e salva em id_out
 public:
+  void calcularEntradas(unsigned I);      //calcular as entradas com o id I e salva em id_out
   inline Circuito():Nin(0),Nout(0),Nportas(0),inputs(NULL),id_out(NULL),portas(NULL) {}
   inline Circuito(const Circuito &C) {copiar(C);}
   inline ~Circuito() {limpar();}
@@ -152,8 +152,10 @@ public:
   void salvar(const char *) const;
   void digitarEntradas();
   void imprimirEntradas(void) const;
-  void imprimirSaidas(void) const;
+  void imprimirSaidas(bool_3S saida[]);
   inline ptr_Porta getPortas(unsigned i) const {return portas[i];}
+  inline int getId_out(unsigned i) const {return id_out[i];}
+  inline bool_3S getInputs(unsigned i) const {return inputs[i];}
   void simular();                             //grande loaco
   void gerarTabela(void);
 };

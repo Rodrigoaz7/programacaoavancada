@@ -40,9 +40,7 @@ MainCircuito::~MainCircuito()
 //leitura de arquivo
 void MainCircuito::on_actionLer_triggered()
 {
-    string nome;
-    nome = "circuito_right0.txt";
-    C.ler(nome.c_str());
+    C.ler("..//Circuito_Qt//circuito_right0.txt");
     redimensiona_tabelas();
 }
 
@@ -73,9 +71,7 @@ void MainCircuito::redimensiona_tabelas()
     ui->tablePortas->setRowCount(numPortas);
     for (i=0; i<numPortas; i++)
     {
-        // Esses valores devem ser lidos a partir de metodos de consulta da classe Circuito
-        // Para fazer um teste, vamos atribuir quantidades aleatorias
-        //C.imprimir();
+        //C.getPortas(i)->imprimir(ostream);
 
         texto = "AND";
         numInputsPorta = C.getPortas(i)->getIn();
@@ -104,22 +100,12 @@ void MainCircuito::redimensiona_tabelas()
 
     }
 
-    /*// Redimensiona a tabela de saidas
+    // Redimensiona a tabela de saidas
     ui->tableSaidas->clearContents();
     ui->tableSaidas->setRowCount(numOutputs);
     for (i=0; i<numOutputs; i++)
     {
-        // Esses valores devem ser lidos a partir de metodos de consulta da classe Circuito
-        // Para fazer um teste, vamos atribuir quantidades aleatorias
-        if (rand()%3 == 0)
-        {
-            idOutput = -(1+rand()%numInputs);
-        }
-        else
-        {
-            idOutput = 1+rand()%numPortas;
-        }
-
+        idOutput = C.getId_out(i);
         // Cria os widgets das celulas da tabela de saidas
         // Coluna 0 (unica)
         prov = new QLabel;
@@ -132,30 +118,40 @@ void MainCircuito::redimensiona_tabelas()
     ui->tableTabelaVerdade->setSelectionMode(QAbstractItemView::NoSelection);
     ui->tableTabelaVerdade->setTabKeyNavigation(false);
 
+    //if(numInputs == 0) numInputs =2;
+    //if(numOutputs == 0) numOutputs = 2;
     // Redimensiona a tabela verdade
     ui->tableTabelaVerdade->clearContents();
-    ui->tableTabelaVerdade->setColumnCount(numInputs+numOutputs);
-    int numPossiveisInputs = round(pow(3,numInputs));
+    if(numInputs == 0 || numOutputs ==0) ui->tableTabelaVerdade->setColumnCount(7);
+    else ui->tableTabelaVerdade->setColumnCount(numInputs+numOutputs);
+    int numPossiveisInputs;
+    if(numInputs == 0) numPossiveisInputs = 10;
+    else numPossiveisInputs = round(pow(3,numInputs));
     ui->tableTabelaVerdade->setRowCount(1+numPossiveisInputs); // 1 linha a mais para cabecalho
 
     // Cria os cabecalhos na primeira linha
     // Entradas
-    ui->tableTabelaVerdade->setSpan(0,0,1,numInputs);
+    if(numInputs == 0) ui->tableTabelaVerdade->setSpan(0,0,1,2);
+    else ui->tableTabelaVerdade->setSpan(0,0,1,numInputs);
     prov = new QLabel("ENTRADAS");
     prov->setAlignment(Qt::AlignCenter);
     prov->setStyleSheet("font-weight: bold");
     ui->tableTabelaVerdade->setCellWidget(0,0,prov);
     // Saidas
-    ui->tableTabelaVerdade->setSpan(0,numInputs,1,numOutputs);
+    if(numInputs == 0 || numOutputs ==0) ui->tableTabelaVerdade->setSpan(0,2,1,2);
+    else ui->tableTabelaVerdade->setSpan(0,numInputs,1,numOutputs);
     prov = new QLabel("SAÍDAS");
     prov->setAlignment(Qt::AlignCenter);
     prov->setStyleSheet("font-weight: bold");
-    ui->tableTabelaVerdade->setCellWidget(0,numInputs,prov);
+    if(numInputs == 0) ui->tableTabelaVerdade->setCellWidget(0,2,prov);
+    else ui->tableTabelaVerdade->setCellWidget(0,numInputs,prov);
 
     // Exibe as possibilidades de combinacao das entradas
 
     // Inicializa com todas as entradas UNDEF
+    if(numInputs==0) numInputs = 2;
     std::vector<int> inputs(numInputs);  // -1=UNDEF; 0=FALSE; 1=TRUE
+
     for (i=0; i<numInputs; i++) inputs[i] = -1;
 
     // Gera todas as linhas da tabela verdade
@@ -194,6 +190,7 @@ void MainCircuito::redimensiona_tabelas()
         // Incrementa a input selecionada
         if (i>=0) inputs[i] += 1;
 
+        if(numOutputs == 0) numOutputs = 2;
         // Gera os labels da j-esima saida
         for (i=0; i<numOutputs; i++)
         {
@@ -201,7 +198,7 @@ void MainCircuito::redimensiona_tabelas()
             prov->setAlignment(Qt::AlignCenter);
             ui->tableTabelaVerdade->setCellWidget(1+j,numInputs+i,prov);
         }
-    }*/
+    }
 
 }
 
@@ -213,5 +210,39 @@ void MainCircuito::on_actionSair_triggered()
 
 void MainCircuito::on_actionSalvar_triggered()
 {
-    C.salvar("teste.txt");
+    C.salvar("..//Circuito_Qt//Saved Files//teste.txt");
+}
+
+void MainCircuito::on_actionGerar_tabela_triggered()
+{
+    QLabel *prov;
+    int numInputs = C.getNumIn();
+    int numPossiveisInputs;
+    if(numInputs == 0) numPossiveisInputs = 10;
+    else numPossiveisInputs = round(pow(3,numInputs));
+    bool_3S saida[2*numInputs-1];
+
+    for(int i=1; i<=numPossiveisInputs;i++)
+    {
+        for(int j=numInputs; j<(2*numInputs);j++)
+        {
+            C.calcularEntradas(i-1);
+            C.simular();
+            C.imprimirSaidas(saida);
+
+            //if(saida == TRUE_3S) prov = new QLabel("T");
+            //else if(saida == FALSE_3S) prov = new QLabel("F");
+            //else prov = new QLabel("X");
+            prov->setAlignment(Qt::AlignCenter);
+            ui->tableTabelaVerdade->setCellWidget(i,j,prov);
+
+        }
+    }
+}
+
+void MainCircuito::on_actionNovo_triggered()
+{
+    Circuito Novo;
+    C = Novo;
+    redimensiona_tabelas();
 }
