@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1508691785 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\circuito\circuito-main.cpp
+1509055700 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\circuito\circuito-main.cpp
 	<iostream>
 	<string>
 	"circuito_STL.h"
+	<vector>
 
 1508696159 c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\circuito\circuito_stl.h
 	<iostream>
 
-1508696717 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\circuito\circuito\circuito.cpp
+1508801551 source:c:\users\rodri\documents\ufrn\6 periodo\programaÇÃo avanÇada\listas\circuito\circuito\circuito.cpp
 	"../circuito_STL.h"
 	<iostream>
 	<fstream>

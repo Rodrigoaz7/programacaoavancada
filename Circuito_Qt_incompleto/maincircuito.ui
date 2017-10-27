@@ -29,11 +29,17 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="tabKeyNavigation">
      <bool>false</bool>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
@@ -110,11 +116,17 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="tabKeyNavigation">
      <bool>false</bool>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
@@ -236,11 +248,20 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAsNeeded</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="tabKeyNavigation">
      <bool>false</bool>
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectItems</enum>
     </property>
     <property name="rowCount">
      <number>99</number>

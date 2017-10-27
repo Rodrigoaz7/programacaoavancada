@@ -2,6 +2,7 @@
 #define _CIRCUITO_H_
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -141,6 +142,7 @@ public:
   void calcularEntradas(unsigned I);      //calcular as entradas com o id I e salva em id_out
   inline Circuito():Nin(0),Nout(0),Nportas(0),inputs(NULL),id_out(NULL),portas(NULL) {}
   inline Circuito(const Circuito &C) {copiar(C);}
+  Circuito(int numIn, int numOut, int numPortas);
   inline ~Circuito() {limpar();}
   inline void operator=(const Circuito &C) {if (this!=&C) {limpar(); copiar(C);}}
   inline unsigned getNumIn(){return Nin;}
@@ -152,12 +154,11 @@ public:
   void salvar(const char *) const;
   void digitarEntradas();
   void imprimirEntradas(void) const;
-  void imprimirSaidas(bool_3S saida[]);
+  void imprimirSaidas(bool_3S outputs[]);
   inline ptr_Porta getPortas(unsigned i) const {return portas[i];}
   inline int getId_out(unsigned i) const {return id_out[i];}
   inline bool_3S getInputs(unsigned i) const {return inputs[i];}
-  void simular();                             //grande loaco
-  void gerarTabela(void);
+  void simular(int inp[], int tam);                             //grande loaco
 };
 
 inline ostream &operator<<(ostream &O, const Circuito &C) {return C.imprimir(O);}

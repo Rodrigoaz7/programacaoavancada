@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "circuito_STL.h"
+#include <vector>
 
 using namespace std;
 
@@ -52,6 +53,7 @@ int main(void)
       C.imprimirSaidas();
       break;
     case 6:
+      //vector outputs::<int>
       C.gerarTabela();
       break;
     default:

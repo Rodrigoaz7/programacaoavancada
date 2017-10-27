@@ -71,8 +71,10 @@ public:
         tablePortas->setGeometry(QRect(0, 48, 311, 551));
         tablePortas->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         tablePortas->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tablePortas->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tablePortas->setTabKeyNavigation(false);
         tablePortas->setAlternatingRowColors(true);
+        tablePortas->setSelectionMode(QAbstractItemView::SingleSelection);
         tablePortas->setSelectionBehavior(QAbstractItemView::SelectRows);
         tablePortas->setRowCount(1);
         tablePortas->setColumnCount(6);
@@ -100,8 +102,10 @@ public:
         tableSaidas->setGeometry(QRect(310, 48, 86, 551));
         tableSaidas->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         tableSaidas->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tableSaidas->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableSaidas->setTabKeyNavigation(false);
         tableSaidas->setAlternatingRowColors(true);
+        tableSaidas->setSelectionMode(QAbstractItemView::SingleSelection);
         tableSaidas->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableSaidas->setRowCount(1);
         tableSaidas->setColumnCount(1);
@@ -138,8 +142,11 @@ public:
         tableTabelaVerdade->setGeometry(QRect(404, 24, 396, 575));
         tableTabelaVerdade->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         tableTabelaVerdade->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        tableTabelaVerdade->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableTabelaVerdade->setTabKeyNavigation(false);
         tableTabelaVerdade->setAlternatingRowColors(true);
+        tableTabelaVerdade->setSelectionMode(QAbstractItemView::NoSelection);
+        tableTabelaVerdade->setSelectionBehavior(QAbstractItemView::SelectItems);
         tableTabelaVerdade->setRowCount(99);
         tableTabelaVerdade->setColumnCount(4);
         tableTabelaVerdade->horizontalHeader()->setVisible(false);

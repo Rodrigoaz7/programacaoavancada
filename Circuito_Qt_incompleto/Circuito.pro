@@ -25,9 +25,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         maincircuito.cpp \
+    modificarporta.cpp \
+    newcircuito.cpp \
+    modificarsaida.cpp \
     circuito.cpp
 
 HEADERS  += maincircuito.h \
+    modificarporta.h \
+    newcircuito.h \
+    modificarsaida.h \
     circuito_STL.h
 
-FORMS    += maincircuito.ui
+FORMS    += maincircuito.ui \
+    modificarporta.ui \
+    newcircuito.ui \
+    modificarsaida.ui

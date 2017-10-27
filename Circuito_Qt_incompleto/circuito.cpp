@@ -473,6 +473,12 @@ bool_3S Porta_NXOR::simular(const bool_3S in[])
             return UNDEF_3S;
     }
 }
+Circuito::Circuito(int numIn, int numOut, int numPortas)
+{
+    Nin = numIn;
+    Nout = numOut;
+    Nportas = numPortas;
+}
 void Circuito::limpar()
 {
     for(unsigned i =0; i<Nportas; i++){
@@ -788,11 +794,14 @@ void Circuito::imprimirEntradas(void) const
     }
 }
 
-void Circuito::imprimirSaidas(bool_3S saida[])
+void Circuito::imprimirSaidas(bool_3S outputs[])
 {
+    int k = 0;
     cout << "SAIDAS: ";
     for(unsigned i = 0; i<Nout; i++){
         if(id_out[i] > 0){
+            outputs[k] = portas[id_out[i]-1]->getSaida();
+            k++;
             switch (portas[id_out[i]-1]->getSaida())
             {
             case FALSE_3S:
@@ -810,6 +819,8 @@ void Circuito::imprimirSaidas(bool_3S saida[])
             case -4:
                 switch(inputs[3])
                 {
+                outputs[k] = inputs[3];
+                k++;
                 case FALSE_3S:
                     cout << "F" << " ";
                     break;
@@ -823,6 +834,8 @@ void Circuito::imprimirSaidas(bool_3S saida[])
             case -3:
                 switch(inputs[2])
                 {
+                outputs[k] = inputs[2];
+                k++;
                 case FALSE_3S:
                     cout << "F" << " ";
                     break;
@@ -836,6 +849,8 @@ void Circuito::imprimirSaidas(bool_3S saida[])
             case -2:
                 switch(inputs[1])
                 {
+                outputs[k] = inputs[1];
+                k++;
                 case FALSE_3S:
                     cout << "F" << " ";
                     break;
@@ -849,6 +864,8 @@ void Circuito::imprimirSaidas(bool_3S saida[])
             case -1:
                 switch(inputs[0])
                 {
+                outputs[k] = inputs[0];
+                k++;
                 case FALSE_3S:
                     cout << "F" << " ";
                     break;
@@ -868,8 +885,15 @@ void Circuito::imprimirSaidas(bool_3S saida[])
         portas[i]->setSaida(UNDEF_3S);
     }
 }
-void Circuito::simular()
+void Circuito::simular(int inp[], int tam)
 {
+    for(unsigned i=0; i<tam;i++)
+    {
+        cout << "TESTE BCTA = " << inp[i] << endl;
+        if(inp[i] == 0) inputs[i] = FALSE_3S;
+        else if(inp[i] == -1) inputs[i] = UNDEF_3S;
+        else inputs[i] = TRUE_3S;
+    }
     unsigned stop=0;
     do
     {
@@ -958,15 +982,4 @@ bool Circuito::verificar(void) const
         }
     }
     return true;
-}
-void Circuito::gerarTabela(void)
-{
-    int lim;
-    lim = pow(3,Nin);
-    for(int i = 0; i<lim; i++){
-        calcularEntradas(i);
-        imprimirEntradas();
-        simular();
-        //imprimirSaidas();
-    }
 }
