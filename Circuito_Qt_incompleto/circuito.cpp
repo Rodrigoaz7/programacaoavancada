@@ -31,6 +31,12 @@ void Porta::setSaida(bool_3S s)
     }
 }
 
+void Porta::setNin(unsigned i)
+{
+    if(i >= 1 && i< 5) Nin = i;
+    else cerr << "Ta certo nao \n";
+}
+
 int Porta::getId_in(unsigned i) const
 {
     return id_in[i];
@@ -473,12 +479,6 @@ bool_3S Porta_NXOR::simular(const bool_3S in[])
             return UNDEF_3S;
     }
 }
-Circuito::Circuito(int numIn, int numOut, int numPortas)
-{
-    Nin = numIn;
-    Nout = numOut;
-    Nportas = numPortas;
-}
 void Circuito::limpar()
 {
     for(unsigned i =0; i<Nportas; i++){
@@ -508,6 +508,14 @@ void Circuito::copiar(const Circuito &C)
     for(unsigned i = 0; i<Nout; i++) id_out[i] = C.id_out[i];
     for(unsigned i = 0; i<Nportas; i++) portas[i] = C.portas[i]->clone();
 }
+
+void Circuito::NovoCircuito(int numIN, int numOUT, int numPORTAS)
+{
+    limpar(); // sempre o objeto estarah vazio ao chamar essa funcao
+    alocar(numIN, numOUT, numPORTAS);
+    cout << "Funcao " << Nin << " " << Nout << " " << Nportas<< endl;
+}
+
 void Circuito::calcularEntradas(unsigned I)
 {
     int vetorBase3[Nin];
@@ -982,4 +990,10 @@ bool Circuito::verificar(void) const
         }
     }
     return true;
+}
+
+
+void Circuito::setId_out(unsigned i, int N)
+{
+    id_out[i] = N;
 }

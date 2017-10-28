@@ -19,7 +19,7 @@ class MainCircuito;
 class MainCircuito : public QMainWindow
 {
     Q_OBJECT
-    Circuito C;
+
 
 public:
     explicit MainCircuito(QWidget *parent = 0);

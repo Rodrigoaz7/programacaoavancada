@@ -11,6 +11,7 @@
 #include <vector>
 #include <cmath>
 
+extern Circuito C;
 MainCircuito::MainCircuito(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainCircuito),
@@ -177,40 +178,12 @@ void MainCircuito::exibe_porta(int i)
 
     QString nomePorta;
     int numInputsPorta, idInputPorta[4];
-
-    QLabel *prov;
     int j;
-
-    // Esses valores (nomePorta, numInputsPorta, idInputPorta[])
-    // devem ser lidos a partir de metodos de consulta da classe Circuito
-    // Para fazer um teste, vamos atribuir quantidades aleatorias
-    switch (rand()%7)
-    {
-    case 0:
-        nomePorta = "NT";
-        break;
-    case 1:
-        nomePorta = "AN";
-        break;
-    case 2:
-        nomePorta = "NA";
-        break;
-    case 3:
-        nomePorta = "OR";
-        break;
-    case 4:
-        nomePorta = "NO";
-        break;
-    case 5:
-        nomePorta = "XO";
-        break;
-    case 6:
-        nomePorta = "NX";
-        break;
-    default:
-        nomePorta = "??";
-        break;
-    }
+    QLabel *prov;
+    nomePorta = "TEST";
+    ostream O();
+    C.imprimir();
+    //nomePorta = C.imprimir();
     //numInputsPorta = (nomePorta != "NT" ? 2+rand()%3 : 1);
     numInputsPorta = C.getPortas(i)->getIn();
     for (j=0; j<numInputsPorta; j++)

@@ -2,6 +2,7 @@
 #include "ui_modificarsaida.h"
 #include "maincircuito.h"
 
+extern Circuito C;
 ModificarSaida::ModificarSaida(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ModificarSaida)
@@ -39,10 +40,7 @@ void ModificarSaida::on_buttonBox_accepted()
     // com o conteudo do button, chamando um metodo da classe circuito
     int idOutput = ui->spinOrigemSaida->value();
 
-    // Aqui deve ser chamado um metodo da classe Circuito que altere a saida cuja
-    // id eh idSaida para que ela assuma a origem especificada por
-    // idOutput
-
+    C.setId_out(idSaida-1,idOutput);
     // Depois de alterada, deve ser reexibida a saida correspondente
     ((MainCircuito*)parentWidget())->exibe_saida(idSaida-1);
 }

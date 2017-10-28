@@ -34,6 +34,7 @@ public:
   inline unsigned getNumInputs() const {return Nin;}
   inline bool_3S getSaida() const {return saida;}
   void setSaida(bool_3S s);
+  void setNin(unsigned i);
   int getId_in(unsigned i) const;
   void setId_in(unsigned i, int N);
   unsigned getIn() {return Nin;}
@@ -142,8 +143,9 @@ public:
   void calcularEntradas(unsigned I);      //calcular as entradas com o id I e salva em id_out
   inline Circuito():Nin(0),Nout(0),Nportas(0),inputs(NULL),id_out(NULL),portas(NULL) {}
   inline Circuito(const Circuito &C) {copiar(C);}
-  Circuito(int numIn, int numOut, int numPortas);
+  void NovoCircuito(int numIN, int numOUT, int numPORTAS);
   inline ~Circuito() {limpar();}
+  void setId_out(unsigned i, int N);
   inline void operator=(const Circuito &C) {if (this!=&C) {limpar(); copiar(C);}}
   inline unsigned getNumIn(){return Nin;}
   inline unsigned getNumOut(){return Nout;}

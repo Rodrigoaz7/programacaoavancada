@@ -2,6 +2,7 @@
 #include "ui_modificarporta.h"
 #include "maincircuito.h"
 
+extern Circuito C;
 ModificarPorta::ModificarPorta(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ModificarPorta),
@@ -86,9 +87,8 @@ void ModificarPorta::on_buttonBox_accepted()
                           ui->spinInput3->value(),
                           ui->spinInput4->value()};
 
-    // Aqui deve ser chamado um metodo da classe Circuito que altere a porta cuja
-    // id eh idPorta para que ela assuma as caracteristicas especificadas por
-    // tipoPorta, numInputsPorta, idInputPorta[]
+    C.getPortas(idPorta-1)->setNin(numInputsPorta);
+    for(unsigned i=0; i<4;i++) C.getPortas(idPorta-1)->setId_in(i,idInputPorta[i]);
 
     // Depois de alterado, deve ser reexibida a porta correspondente
     ((MainCircuito*)parentWidget())->exibe_porta(idPorta-1);

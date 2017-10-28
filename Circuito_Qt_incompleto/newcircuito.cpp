@@ -3,6 +3,8 @@
 #include "maincircuito.h"
 #include <QMessageBox>
 
+extern Circuito C;
+
 NewCircuito::NewCircuito(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewCircuito)
@@ -24,8 +26,12 @@ void NewCircuito::on_NewCircuito_accepted()
     numInputs = ui->spinNumIn->value();
     numOutputs = ui->spinNumOut->value();
     numPortas = ui->spinNumPortas->value();
-    //Circuito Novo(numInputs, numOutputs, numPortas);
-    // O circuito deve ser criado usando a funcao apropriada da classe Circuito
+
+    cout << "ANTES " << endl;
+    cout << "Novo na NOVO: " << C.getNumIn() << " " << C.getNumOut() << endl;
+    cout << "DEPOIS " << endl;
+    C.NovoCircuito(numInputs, numOutputs, numPortas);
+    cout << "Novo na NOVO: " << C.getNumIn() << " " << C.getNumOut() << endl;
 
     // Provisoriamente, estamos apenas exibindo uma msg
     QMessageBox msgBox;
@@ -36,3 +42,4 @@ void NewCircuito::on_NewCircuito_accepted()
     // Depois do novo circuito criado, as tabelas devem ser redimensionadas
     ((MainCircuito*)parentWidget())->redimensiona_tabelas();
 }
+
