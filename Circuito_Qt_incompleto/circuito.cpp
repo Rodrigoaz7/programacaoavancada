@@ -42,11 +42,6 @@ int Porta::getId_in(unsigned i) const
     return id_in[i];
 }
 
-void Porta::setId_in(unsigned i, int N)
-{
-    id_in[i] = N;
-}
-
 void Porta::digitar()
 {
        int t;
@@ -101,6 +96,14 @@ ostream &Porta::imprimir(ostream &O) const
     return O;
 }
 
+void Porta::setId_in(unsigned i, int N)
+{
+    if(N >= -4 && N != 0 && N <= 7)
+    {
+        id_in[i] = N;
+    }
+    else cerr << "Valor invalido \n";
+}
 
 //FUNÇÕES DAS CLASSES DAS PORTAS LÓGICAS
 void Porta_NOT::digitar()
@@ -123,7 +126,7 @@ bool Porta_NOT::ler(istream &I)
     unsigned t;
     I >> t;
     if(t!=1){
-        cerr << "entradas em ecesso.";
+        cerr << "entradas em excesso. \n";
         return false;
     }
     I.ignore(255,' ');
@@ -135,8 +138,11 @@ bool Porta_NOT::ler(istream &I)
 
 ostream &Porta_NOT::imprimir(ostream &O) const
 {
-   O << "NT";
-   return O;
+    O << ") NT " << Nin << ": ";
+          if(Nin == 1){
+              O << id_in[0] << " ";
+          }
+      return O;
 }
 
 bool_3S Porta_NOT::simular(const bool_3S in[])
@@ -155,7 +161,10 @@ bool_3S Porta_NOT::simular(const bool_3S in[])
 
 ostream &Porta_AND::imprimir(ostream &O) const
 {
-    O << "AN";
+    O << ") AN " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 bool_3S Porta_AND::simular(const bool_3S in[])
@@ -205,7 +214,10 @@ bool_3S Porta_AND::simular(const bool_3S in[])
 }
 ostream &Porta_NAND::imprimir(ostream &O) const
 {
-    O << "NA";
+    O << ") NA " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 bool_3S Porta_NAND::simular(const bool_3S in[])
@@ -256,7 +268,10 @@ bool_3S Porta_NAND::simular(const bool_3S in[])
 
 ostream &Porta_OR::imprimir(ostream &O) const
 {
-    O << "OR";
+    O << ") OR " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 
@@ -308,7 +323,10 @@ bool_3S Porta_OR::simular(const bool_3S in[])
 
 ostream &Porta_NOR::imprimir(ostream &O) const
 {
-    O << "NO";
+    O << ") NO " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 
@@ -360,7 +378,10 @@ bool_3S Porta_NOR::simular(const bool_3S in[])
 
 ostream &Porta_XOR::imprimir(ostream &O) const
 {
-    O << "XO";
+    O << ") XO " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 
@@ -421,7 +442,10 @@ bool_3S Porta_XOR::simular(const bool_3S in[])
 
 ostream &Porta_NXOR::imprimir(ostream &O) const
 {
-    O << "NX";
+    O << ") NX " << Nin << ": ";
+    for(unsigned i = 0; i<Nin; i++){
+        O << id_in[i] << " ";
+    }
     return O;
 }
 
@@ -511,9 +535,39 @@ void Circuito::copiar(const Circuito &C)
 
 void Circuito::NovoCircuito(int numIN, int numOUT, int numPORTAS)
 {
-    limpar(); // sempre o objeto estarah vazio ao chamar essa funcao
-    alocar(numIN, numOUT, numPORTAS);
-    cout << "Funcao " << Nin << " " << Nout << " " << Nportas<< endl;
+    limpar();
+    alocar(numIN,numOUT,numPORTAS);
+    Porta_NOT NT;
+    for(unsigned i = 0; i<Nin; i++) inputs[i] = UNDEF_3S;
+    for(unsigned i = 0; i<Nout; i++) id_out[i] = 0;
+    for(unsigned i = 0; i<Nportas; i++)
+    {
+        portas[i] = (&NT)->clone();
+        getPortas(i)->setId_in(i,-1);
+    }
+}
+
+void Circuito::setTipo_porta(int idporta, QString tipoPorta)
+{
+    Porta_NOT NT;
+    Porta_AND AN;
+    Porta_NAND NA;
+    Porta_NOR NOR;
+    Porta_OR OR;
+    Porta_XOR XO;
+    Porta_NXOR NX;
+    if(tipoPorta == "NT") { portas[idporta] = (&NT) -> clone(); getPortas(idporta)->setTipo(tipoPorta.toStdString()); }
+    else if(tipoPorta == "AN") { portas[idporta] = (&AN) -> clone(); getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+    else if(tipoPorta == "NA") {portas[idporta] = (&NA) -> clone();getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+    else if(tipoPorta == "OR") {portas[idporta] = (&OR) -> clone();getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+    else if(tipoPorta == "NO") {portas[idporta] = (&NOR) -> clone();getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+    else if(tipoPorta == "XO") {portas[idporta] = (&XO) -> clone();getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+    else if(tipoPorta == "NX") {portas[idporta] = (&NX) -> clone();getPortas(idporta)->setTipo(tipoPorta.toStdString());}
+}
+
+void Circuito::setporta(int idporta, unsigned i, int N)
+{
+    portas[idporta]->setId_in(i,N);
 }
 
 void Circuito::calcularEntradas(unsigned I)
@@ -669,13 +723,13 @@ void Circuito::ler(const char *file_name)
             myFile.ignore(255, ' ');
             myFile >> nomePorta;
 
-            if(nomePorta == "NT") portas[i] = (&NT) -> clone();
-            else if(nomePorta == "AN") portas[i] = (&AN) -> clone();
-            else if(nomePorta == "NA") portas[i] = (&NA) -> clone();
-            else if(nomePorta == "OR") portas[i] = (&OR) -> clone();
-            else if(nomePorta == "NO") portas[i] = (&NO) -> clone();
-            else if(nomePorta == "XO") portas[i] = (&XO) -> clone();
-            else if(nomePorta == "NX") portas[i] = (&NX) -> clone();
+            if(nomePorta == "NT") { portas[i] = (&NT) -> clone(); getPortas(i)->setTipo(nomePorta); }
+            else if(nomePorta == "AN") { portas[i] = (&AN) -> clone(); getPortas(i)->setTipo(nomePorta);}
+            else if(nomePorta == "NA") {portas[i] = (&NA) -> clone();getPortas(i)->setTipo(nomePorta);}
+            else if(nomePorta == "OR") {portas[i] = (&OR) -> clone();getPortas(i)->setTipo(nomePorta);}
+            else if(nomePorta == "NO") {portas[i] = (&NO) -> clone();getPortas(i)->setTipo(nomePorta);}
+            else if(nomePorta == "XO") {portas[i] = (&XO) -> clone();getPortas(i)->setTipo(nomePorta);}
+            else if(nomePorta == "NX") {portas[i] = (&NX) -> clone();getPortas(i)->setTipo(nomePorta);}
             else{
                 cerr << "Tipo de porta inesistente.";
                 limpar();
@@ -734,18 +788,18 @@ void Circuito::ler(const char *file_name)
 }
 ostream &Circuito::imprimir(ostream &O) const
 {
-    //O << "CIRCUITO:";
-    //O << Nin << " " << Nout << " " << Nportas << endl;
-    /*O << "PORTAS:" << endl;*/
+    O << "CIRCUITO:";
+    O << Nin << " " << Nout << " " << Nportas << endl;
+    O << "PORTAS:" << endl;
     for(unsigned i = 0; i<Nportas; i++){
-        //i+1;
+        O << i+1;
         portas[i]->imprimir(O);
         O << endl;
     }
-    /*O << "SAIDAS:" << endl;
+    O << "SAIDAS:" << endl;
     for(unsigned i = 0; i<Nout; i++){
         O << i+1 << ") " << id_out[i] << endl;
-    }*/
+    }
     return O;
 }
 void Circuito::salvar(const char *A) const
@@ -897,7 +951,6 @@ void Circuito::simular(int inp[], int tam)
 {
     for(unsigned i=0; i<tam;i++)
     {
-        cout << "TESTE BCTA = " << inp[i] << endl;
         if(inp[i] == 0) inputs[i] = FALSE_3S;
         else if(inp[i] == -1) inputs[i] = UNDEF_3S;
         else inputs[i] = TRUE_3S;

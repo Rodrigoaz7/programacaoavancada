@@ -27,11 +27,7 @@ void NewCircuito::on_NewCircuito_accepted()
     numOutputs = ui->spinNumOut->value();
     numPortas = ui->spinNumPortas->value();
 
-    cout << "ANTES " << endl;
-    cout << "Novo na NOVO: " << C.getNumIn() << " " << C.getNumOut() << endl;
-    cout << "DEPOIS " << endl;
     C.NovoCircuito(numInputs, numOutputs, numPortas);
-    cout << "Novo na NOVO: " << C.getNumIn() << " " << C.getNumOut() << endl;
 
     // Provisoriamente, estamos apenas exibindo uma msg
     QMessageBox msgBox;

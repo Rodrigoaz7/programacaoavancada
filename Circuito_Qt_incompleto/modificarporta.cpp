@@ -87,8 +87,12 @@ void ModificarPorta::on_buttonBox_accepted()
                           ui->spinInput3->value(),
                           ui->spinInput4->value()};
 
+    //Primeiro, mudamos o tipo da porta (polimorficamente)
+    C.setTipo_porta(idPorta-1, tipoPorta);
+    //Depois, mudamos o numero de entrada da porta
     C.getPortas(idPorta-1)->setNin(numInputsPorta);
-    for(unsigned i=0; i<4;i++) C.getPortas(idPorta-1)->setId_in(i,idInputPorta[i]);
+    //E adicionamos os Id's de entrada a porta modificada
+    for(int i=0; i<numInputsPorta;i++) C.setporta(idPorta-1, i,idInputPorta[i]);
 
     // Depois de alterado, deve ser reexibida a porta correspondente
     ((MainCircuito*)parentWidget())->exibe_porta(idPorta-1);

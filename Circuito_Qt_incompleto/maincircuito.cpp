@@ -5,6 +5,7 @@
 #include "circuito_STL.h"
 #include <QStringList>
 #include <QString>
+#include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <time.h>
@@ -77,9 +78,6 @@ void MainCircuito::redimensiona_tabelas()
     QLabel *prov;
     int i;
 
-    // Esses numeros devem ser lidos a partir de metodos de consulta da classe Circuito
-    // Para fazer um teste, vamos atribuir quantidades aleatorias
-    srand(time(NULL));
     numInputs = C.getNumIn();
     numOutputs = C.getNumOut();
     numPortas = C.getNumPortas();
@@ -180,10 +178,7 @@ void MainCircuito::exibe_porta(int i)
     int numInputsPorta, idInputPorta[4];
     int j;
     QLabel *prov;
-    nomePorta = "TEST";
-    ostream O();
-    C.imprimir();
-    //nomePorta = C.imprimir();
+    nomePorta = QString::fromStdString(C.getPortas(i)->getTipo());
     //numInputsPorta = (nomePorta != "NT" ? 2+rand()%3 : 1);
     numInputsPorta = C.getPortas(i)->getIn();
     for (j=0; j<numInputsPorta; j++)
@@ -223,9 +218,6 @@ void MainCircuito::exibe_saida(int i)
     int idOutput;
 
     QLabel *prov;
-
-    // Esse valor (idOutput) deve ser lido a partir de metodos de consulta da classe Circuito
-    // Para fazer um teste, vamos atribuir quantidades aleatorias
     idOutput = C.getId_out(i);
 
     // Cria o widget da celula da tabela de saidas
@@ -255,8 +247,8 @@ void MainCircuito::on_actionLer_triggered()
     if (!fileName.isEmpty()) {
         // Le o circuito do arquivo com nome "arq", usando a funcao apropriada da classe circuito
         string arq = fileName.toStdString();
-        C.ler(arq.c_str());
-        C.ler("circuito_right0.txt"); //apenas para etapas de teste
+        //C.ler(arq.c_str());
+        C.ler("..//circuito_qt_incompleto//circuito_right1.txt"); //apenas para etapas de teste
         // Provisoriamente, estamos apenas exibindo uma msg
         QMessageBox msgBox;
         msgBox.setText("Tenta ler um circuito a partir do arquivo "+fileName);
@@ -270,20 +262,17 @@ void MainCircuito::on_actionLer_triggered()
 // Abre uma caixa de dialogo para salvar um arquivo
 void MainCircuito::on_actionSalvar_triggered()
 {
+    C.salvar("..//Circuito_qt_incompleto//Saved Files//circuito.txt");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Arquivo de circuito"), QString(),
             tr("Circuitos (*.txt);;Todos (*.*)"));
-
-    if (!fileName.isEmpty()) {
         if (!fileName.isEmpty()) {
             // Salva o circuito no arquivo com nome "arq", usando a funcao apropriada da classe circuito
             string arq = fileName.toStdString();
-            C.salvar(arq.c_str());
             // Provisoriamente, estamos apenas exibindo uma msg
             QMessageBox msgBox;
             msgBox.setText("Tenta salvar o circuito no arquivo "+fileName);
             msgBox.exec();
         }
-    }
 }
 
 // Gera e exibe a tabela verdade para o circuito
@@ -310,7 +299,6 @@ void MainCircuito::on_actionGerar_tabela_triggered()
     //
     // Gera todas as linhas da tabela verdade
     //
-    //C.gerarTabela(outputs);
 
     for (i=0; i<numCombinacoesEntrada; i++)
     {
@@ -337,6 +325,7 @@ void MainCircuito::on_actionGerar_tabela_triggered()
             prov = new QLabel(texto);
             prov->setAlignment(Qt::AlignCenter);
             ui->tableTabelaVerdade->setCellWidget(i+1, j, prov);
+            //Funcao de simulacao do circuito
             C.simular(inputs, numInputs);
         }
 
@@ -356,7 +345,8 @@ void MainCircuito::on_actionGerar_tabela_triggered()
         // Exibe a j-esima saida
         //
         // Cria os QLabels correspondentes aas saidas outputs[j]
-        //C.simular(inputs,numInputs);
+
+        //Imprimindo na tabela as saidas
         C.imprimirSaidas(outputs);
 
         for (j=0; j<numOutputs; j++)

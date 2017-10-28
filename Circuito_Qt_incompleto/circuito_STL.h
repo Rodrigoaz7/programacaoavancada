@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <QString>
 
 using namespace std;
 
@@ -22,6 +23,7 @@ typedef Porta *ptr_Porta;
 
 class Porta {
 protected:
+  string tipo;
   unsigned Nin;
   int id_in[NUM_MAX_INPUTS_PORTA];
   bool_3S saida;
@@ -33,10 +35,12 @@ public:
   virtual ptr_Porta clone() const = 0;
   inline unsigned getNumInputs() const {return Nin;}
   inline bool_3S getSaida() const {return saida;}
+  inline string getTipo() const {return tipo;}
+  inline void setTipo(string novo_tipo){tipo = novo_tipo;}
   void setSaida(bool_3S s);
   void setNin(unsigned i);
-  int getId_in(unsigned i) const;
   void setId_in(unsigned i, int N);
+  int getId_in(unsigned i) const;
   unsigned getIn() {return Nin;}
   virtual void digitar();
   virtual bool ler(istream &I);
@@ -140,6 +144,9 @@ private:
   void copiar(const Circuito &C);                      // ATENCAO: fora de construtor, sempre chamar antes limpar()
   bool verificar(void) const;
 public:
+  inline void setNIN(int novo){Nin = novo;}
+  inline void setOUT(int novo){Nout = novo;}
+  inline void setNUMPORTAS(int novo){Nportas = novo;}
   void calcularEntradas(unsigned I);      //calcular as entradas com o id I e salva em id_out
   inline Circuito():Nin(0),Nout(0),Nportas(0),inputs(NULL),id_out(NULL),portas(NULL) {}
   inline Circuito(const Circuito &C) {copiar(C);}
@@ -161,6 +168,8 @@ public:
   inline int getId_out(unsigned i) const {return id_out[i];}
   inline bool_3S getInputs(unsigned i) const {return inputs[i];}
   void simular(int inp[], int tam);                             //grande loaco
+  void setTipo_porta(int idporta, QString tipo);
+  void setporta(int idporta, unsigned i, int N);
 };
 
 inline ostream &operator<<(ostream &O, const Circuito &C) {return C.imprimir(O);}
