@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <limits>
+#include <QMessageBox>
 #include <cmath>
 using namespace std;
 
@@ -673,6 +674,7 @@ void Circuito::digitar()
 }
 void Circuito::ler(const char *file_name)
 {
+    QMessageBox erro;
     cout << "Ta ao menos entrando na funcao \n";
     ifstream myFile(file_name);
     if(myFile.is_open())
@@ -683,6 +685,8 @@ void Circuito::ler(const char *file_name)
         getline(myFile, word_circuito, ':');
         if(word_circuito != "CIRCUITO")
         {
+            erro.setText("Faltando cabecalho 'CIRCUITO' ");
+            erro.exec();
             cerr<<"Arquivo faltando 'CIRCUITO:' .\n";
             limpar();
             return;
@@ -697,6 +701,8 @@ void Circuito::ler(const char *file_name)
         myFile >> word_PORTAS;
         if(word_PORTAS != "PORTAS:")
         {
+            erro.setText("Faltando cabecalho 'PORTAS' ");
+            erro.exec();
             cerr<<"Arquivo faltando 'PORTAS:' .\n";
             limpar();
             return;
@@ -716,6 +722,8 @@ void Circuito::ler(const char *file_name)
             cout << "id = " << flag << ": " << id_porta_prov << endl;
             if(id_porta_prov != flag)
             {
+                erro.setText("Ids fora de ordem (faltando porta)' ");
+                erro.exec();
                 cerr<<"ids fora de ordem (Faltando porta) .\n";
                 limpar();
                 return;
@@ -731,19 +739,23 @@ void Circuito::ler(const char *file_name)
             else if(nomePorta == "XO") {portas[i] = (&XO) -> clone();getPortas(i)->setTipo(nomePorta);}
             else if(nomePorta == "NX") {portas[i] = (&NX) -> clone();getPortas(i)->setTipo(nomePorta);}
             else{
-                cerr << "Tipo de porta inesistente.";
+                erro.setText("Tipo de porta inexistente ");
+                erro.exec();
+                cerr << "Tipo de porta inexistente.";
                 limpar();
                 return;
             }
             portas[i] -> ler(myFile);
             flag++;
             i++;
-            myFile.ignore(255,'\n'); //Eu quem botei ;)
+            myFile.ignore(255,'\n');
         }while(flag <= Nportas);
         //pegar as saidas
         myFile >> word_SAIDA;
         if(word_SAIDA != "SAIDAS:")
         {
+            erro.setText("Faltando cabecalho 'SAIDAS' ");
+            erro.exec();
             cerr<<"Arquivo faltando 'SAIDAS:' .\n";
             limpar();
             return;
@@ -772,12 +784,16 @@ void Circuito::ler(const char *file_name)
             }
             else
             {
+                erro.setText("Saidas fora de ordem");
+                erro.exec();
                 cerr<<"Saidas fora de ordem.\n";
                 limpar();
                 return;
             }
         }
     }else{
+        erro.setText("Arquivo nao existe ");
+        erro.exec();
         cerr << "arquivo inesistente.";
         limpar();
         return;
@@ -981,23 +997,34 @@ void Circuito::simular(int inp[], int tam)
 }
 bool Circuito::verificar(void) const
 {
+    QMessageBox erro;
     if(Nin > 4){
+        erro.setText("quantidade de entrada maior que 4");
+        erro.exec();
         cerr << "quantidade de entrada maior que 4";
         return false;
     }
     if(Nin == 0){
+        erro.setText("Nin == 0");
+        erro.exec();
         cerr << "Nin == 0";
         return false;
     }
     if(Nout == 0){
+        erro.setText("Nout == 0");
+        erro.exec();
         cerr << "Nout == 0";
         return false;
     }
     if(Nout > (Nportas + Nin)){
+        erro.setText("quantidade de saida maior que maior que o numero de entradas e saida somados");
+        erro.exec();
         cerr << "quantidade de saida maior que maior que o numero de entradas e saida somados";
         return false;
     }
     if(Nportas == 0){
+        erro.setText("Portas nulas !?");
+        erro.exec();
         cerr << "o circuito tem quantidade de portas nula";
         return false;
     }
@@ -1011,15 +1038,21 @@ bool Circuito::verificar(void) const
 
             for(unsigned i = 0; i < portas[cont]->getIn(); i++){
                 if(portas[cont]->getId_in(i) == 0){
+                    erro.setText("Id_in == 0 ");
+                    erro.exec();
                     cerr << "id_in == 0 (1)";
                     return false;
                 }
                 if(portas[cont]->getId_in(i) < -entradas ){
+                    erro.setText("Id_in < -Nin");
+                    erro.exec();
                     cerr << "id_in < -Nin";
                     return false;
                 }
                 if(portas[cont]->getId_in(i) > port)
                 {
+                    erro.setText("Id_in > numero de portas !");
+                    erro.exec();
                     cerr << "id_in > numero de portas";
                     return false;
                 }
@@ -1027,14 +1060,20 @@ bool Circuito::verificar(void) const
         }
         if(cont < Nout){
                 if(id_out[contOut] == 0){
+                    erro.setText("Id_out == 0 !?");
+                    erro.exec();
                     cerr << "id_out == 0 (2)";
                     return false;
                 }
                 if(id_out[contOut] < -saidas){
+                    erro.setText("Id_out < -Nin");
+                    erro.exec();
                     cerr << "id_out < -Nin";
                     return false;
                 }
                 if(id_out[contOut] > port){
+                    erro.setText("Id_out > numero de portas");
+                    erro.exec();
                     cerr << "id_out > numero de portas";
                     cout << " " << id_out[contOut];
                     return false;

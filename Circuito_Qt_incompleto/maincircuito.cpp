@@ -242,13 +242,14 @@ void MainCircuito::on_actionNovo_triggered()
 // Abre uma caixa de dialogo para ler um arquivo
 void MainCircuito::on_actionLer_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Arquivo de circuito"), QString(),
+    C.ler("..//circuito_qt_incompleto//Saved Files//circuito.txt");
+
+    /*QString fileName = QFileDialog::getOpenFileName(this, tr("Arquivo de circuito"), QString(),
             tr("Circuitos (*.txt);;Todos (*.*)"));
     if (!fileName.isEmpty()) {
         // Le o circuito do arquivo com nome "arq", usando a funcao apropriada da classe circuito
         string arq = fileName.toStdString();
         //C.ler(arq.c_str());
-        C.ler("..//circuito_qt_incompleto//circuito_right1.txt"); //apenas para etapas de teste
         // Provisoriamente, estamos apenas exibindo uma msg
         QMessageBox msgBox;
         msgBox.setText("Tenta ler um circuito a partir do arquivo "+fileName);
@@ -256,14 +257,15 @@ void MainCircuito::on_actionLer_triggered()
 
         // Feita a leitura, reexibe todas as tabelas
         redimensiona_tabelas();
-    }
+    }*/
+    redimensiona_tabelas();
 }
 
 // Abre uma caixa de dialogo para salvar um arquivo
 void MainCircuito::on_actionSalvar_triggered()
 {
     C.salvar("..//Circuito_qt_incompleto//Saved Files//circuito.txt");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Arquivo de circuito"), QString(),
+    /*QString fileName = QFileDialog::getSaveFileName(this, tr("Arquivo de circuito"), QString(),
             tr("Circuitos (*.txt);;Todos (*.*)"));
         if (!fileName.isEmpty()) {
             // Salva o circuito no arquivo com nome "arq", usando a funcao apropriada da classe circuito
@@ -272,7 +274,7 @@ void MainCircuito::on_actionSalvar_triggered()
             QMessageBox msgBox;
             msgBox.setText("Tenta salvar o circuito no arquivo "+fileName);
             msgBox.exec();
-        }
+        }*/
 }
 
 // Gera e exibe a tabela verdade para o circuito
